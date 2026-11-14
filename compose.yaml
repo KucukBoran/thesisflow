@@ -1,0 +1,18 @@
+services:
+  app:
+    build: .
+    ports: ["127.0.0.1:8080:8080"]
+    volumes: ["thesis-data:/app/storage"]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "php",
+          "-r",
+          "exit(@file_get_contents('http://127.0.0.1:8080/?page=health') === false ? 1 : 0);",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+volumes:
+  thesis-data:
